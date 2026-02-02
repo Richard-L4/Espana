@@ -1,0 +1,5 @@
+venv/
+env.py
+# Ignore Python cache files
+*.pyc
+__pycache__/
