@@ -14,15 +14,99 @@ html, body {
   overflow-x: hidden;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-top: 4.375rem;
-  background: url('../images/Home-page-1.jpg') 
-              center center / cover no-repeat fixed;
-  image-rendering: auto;
+body.home-page {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
 }
+
+/* General home image section */
+.home-image {
+  height: 60vh;                  /* almost full screen */
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;   /* creates parallax feel */
+  margin-bottom: 3rem;
+}
+
+/* Specific images */
+.home-image.image-1 {
+  background-image: url('../images/Home-page-1.jpg');
+}
+
+.home-image.image-2 {
+  background-image: url('../images/Home-page-2.jpg');
+}
+
+/* Text section */
+.home-text {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: #4691b7;         /* optional */
+}
+
+.home-text .text-container {
+  max-width: 700px;
+}
+
+.home-text h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.home-text p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+
+
+
+/* ---------------------------
+   Morph Background
+--------------------------- */
+.morph-page {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.image-morph {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+.image-morph img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: crossfade 16s infinite;
+}
+
+.image-morph img:nth-child(1) { animation-delay: 0s; }
+.image-morph img:nth-child(2) { animation-delay: 3.2s; }
+.image-morph img:nth-child(3) { animation-delay: 6.4s; }
+.image-morph img:nth-child(4) { animation-delay: 9.6s; }
+.image-morph img:nth-child(5) { animation-delay: 12.8s; }
+
+/* keyframes: fade in, stay visible, fade out */
+@keyframes crossfade {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }   /* fade in */
+  30%  { opacity: 1; }   /* visible */
+  40%  { opacity: 0; }   /* fade out */
+  100% { opacity: 0; }
+}
+
 
 main {
   flex: 1;
@@ -38,7 +122,7 @@ main {
 .color {
   color: yellow;                       /* text color */
   text-align: center;
-  margin: 1em auto;
+  margin: 4em auto;
   padding: 0.5em 1em;                   /* subtle padding to keep size reasonable */
   border: 2px solid #f8046f;           /* blue border */
   border-radius: 8px;       
@@ -180,49 +264,6 @@ nav a.active {
   }
 }
 
-/* for photo display in index */
-
-
-
-.image-morph {
-    position: relative;
-    width: 70%;
-    max-width: 1200px;
-    height: 400px;
-    margin: 20px auto;
-    overflow: hidden;
-    border: 8px solid #124f49;
-    border-radius: 8px;
-    box-shadow: 0 0 0 4px yellow; 
-}
-
-.image-morph img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    animation: morph 25.6s linear infinite;
-}
-
-.image-morph img:nth-child(1) { animation-delay: 0s; }
-.image-morph img:nth-child(2) { animation-delay: 3.2s; }
-.image-morph img:nth-child(3) { animation-delay: 6.4s; }
-.image-morph img:nth-child(4) { animation-delay: 9.6s; }
-.image-morph img:nth-child(5) { animation-delay: 12.8s; }
-.image-morph img:nth-child(6) { animation-delay: 16s; }
-.image-morph img:nth-child(7) { animation-delay: 19.2s; }
-.image-morph img:nth-child(8) { animation-delay: 22.4s; }
-
-@keyframes morph {
-    0% { opacity: 0; }
-    3.125% { opacity: 1; }       /* fade in over 0.2s (3.2% of 25.6s) */
-    15.625% { opacity: 1; }      /* stay visible for ~3s */
-    18.75% { opacity: 0; }       /* fade out over 0.2s */
-    100% { opacity: 0; }         /* remain hidden for the rest of cycle */
-}
 
 /* intro text */
 .valencia-intro {

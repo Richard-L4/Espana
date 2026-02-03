@@ -16,7 +16,11 @@
     <script defer src="{% static 'JS/espana.js' %}"></script>
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
+
+     {% block morph_images %}
+     {% endblock %}
+
     <nav class="navbar">
         <div class="logo">
             <a href="{% url 'index' %}">
