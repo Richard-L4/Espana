@@ -17,6 +17,8 @@ html, body {
 body.home-page {
   margin: 0;
   font-family: "Times New Roman", Times, serif;
+  color: black;
+  background-color: #0d5969; /* this is your “general background” */
 }
 
 /* General home image section */
@@ -26,7 +28,7 @@ body.home-page {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;   /* creates parallax feel */
-  margin-bottom: 3rem;
+  margin-bottom: 0rem;
 }
 
 /* Specific images */
@@ -40,13 +42,13 @@ body.home-page {
 
 /* Text section */
 .home-text {
-  min-height: 90vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 2rem;
-  background-color: #4691b7;         /* optional */
+  background-color: #a2b7c1;         /* optional */
 }
 
 .home-text .text-container {
@@ -64,15 +66,20 @@ body.home-page {
 }
 
 
-
 /* ---------------------------
    Morph Background
 --------------------------- */
 .morph-page {
   position: relative;
-  overflow: hidden;
   min-height: 100vh;
+  display: flex;              /* THIS was missing */
+  flex-direction: column;     /* stack nav → main → footer */
 }
+
+.morph-page main {
+  flex: 1;                    /* pushes footer down */
+}
+
 
 .image-morph {
   position: fixed;
@@ -122,11 +129,12 @@ main {
 .color {
   color: yellow;                       /* text color */
   text-align: center;
-  margin: 4em auto;
+  margin: 4em auto 1em auto;
   padding: 0.5em 1em;                   /* subtle padding to keep size reasonable */
   border: 2px solid #f8046f;           /* blue border */
   border-radius: 8px;       
   background: #124f49;
+  width: fit-content;   /* 👈 makes box hug text */
 }
 
 
@@ -950,7 +958,8 @@ footer {
 /* ===========================
    Misc Responsive
 =========================== */
-@media screen and (max-width: 740px) { h1.color { margin-top: 4rem; } }
+@media screen and (max-width: 740px) { h1.color { margin-top: 8rem; } }
 @media screen and (max-width: 375px) { h1.color { margin-top: 8rem; } }
+@media screen and (max-width: 275px) and (max-width: 375px) { h1.color { margin-top: 6rem; } }
 @media screen and (max-width: 320px) { body { padding-top: 3.5rem; } }
 @media screen and (max-height: 500px) { body { min-height: 100vh; } }
