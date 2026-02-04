@@ -64,3 +64,12 @@ class RegisterForm(UserCreationForm):
             'username': forms.TextInput(
                 attrs={'placeholder': 'Enter your username'},
             )}
+
+
+class LoginForm(forms.Form):
+    name = forms.CharField(max_length=20, label="Username")
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Enter your name'
+        }), label="Password"
+    )

@@ -20,4 +20,12 @@
 
  <h2 class="color">Welcome to the Logout page.</h2>
 
+ <p>
+    <a class="color-return" href="{% url 'index' %}">Reurn Home</a>
+ </p>
+
+ <a class="logout-form" href="{% url 'confirm-logout' %}">
+    <button id="lg" type="submit">Logout</button>
+ </a>
+
 {% endblock %}
