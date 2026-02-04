@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import ContactForm
+from .forms import ContactForm, RegisterForm
 from django.contrib import messages
 
 
@@ -41,4 +41,11 @@ def logout(request):
 
 
 def register(request):
-    return render(request, 'register.html')
+    form = RegisterForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        user = form.save()
+        messages.success(
+            request, f"Account created for {user.username}! You can log in.")
+        return redirect('login')
+
+    return render(request, 'register.html', {'form': form})
