@@ -29,14 +29,18 @@
             </a>
         </div>
         <div class="nav-links" id="nav-links">
-            <a href="{% url 'index' %}">Home</a>
-            <a href="{% url 'about' %}">About</a>
-            <a href="{% url 'cities' %}">Cities</a>
-            <a href="{% url 'city-details' %}">City Details</a>
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'logout' %}">Logout</a>
-            <a href="{% url 'confirm-logout' %}">Confirm Logout</a>
-            <a href="{% url 'register' %}">Register</a>
+            <a href="{% url 'index' %}" class="{% if active_tab == 'index' %}active{% endif %}">Home</a>
+            <a href="{% url 'about' %}" class="{% if active_tab == 'about' %}active{% endif %}">About</a>
+            <a href="{% url 'cities' %}" class="{% if active_tab == 'cities' %}active{% endif %}">Cities</a>
+            {% if active_tab == 'city-details' %}
+            <span class="active">City Details</span>
+            {% endif %}
+            <a href="{% url 'login' %}" class="{% if active_tab == 'login' %}active{% endif %}">Login</a>
+            <a href="{% url 'logout' %}" class="{% if active_tab == 'logout' %}active{% endif %}">Logout</a>
+            {% if active_tab == 'confirm-logout' %}
+            <span class="active">Confirm Logout</span>
+            {% endif %}
+            <a href="{% url 'register' %}" class="{% if active_tab == 'register' %}active{% endif %}">Register</a>
             <a href="{% url 'admin:index' %}">Admin</a>
         </div>
         <div class="hamburger" id="hamburger">&#9776;</div>

@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout, authenticate
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'active_tab': 'index'})
 
 
 def about(request):
@@ -19,15 +19,15 @@ def about(request):
             return redirect('about')
     else:
         form = ContactForm()
-    return render(request, 'about.html', {'form': form})
+    return render(request, 'about.html', {'active_tab': 'about', 'form': form})
 
 
 def cities(request):
-    return render(request, 'cities.html')
+    return render(request, 'cities.html', {'active_tab': 'cities'})
 
 
 def city_details(request):
-    return render(request, 'city-details.html')
+    return render(request, 'city-details.html', {'active_tab': 'city-details'})
 
 
 # ==============================
@@ -46,21 +46,22 @@ def user_login(request):
         else:
             messages.error(request, "Invalid username or password")
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'active_tab': 'login', 'form': form})
 
 
 def user_logout(request):
     if request.method == 'POST':
         logout(request)
         return redirect('index')
-    return render(request, 'logout.html')
+    return render(request, 'logout.html', {'active_tab': 'logout'})
 
 
 def confirm_logout(request):
     if request.method == 'POST':
         logout(request)
         return redirect('index')
-    return render(request, 'confirm-logout.html')
+    return render(request,
+                  'confirm-logout.html', {'active_tab': 'confirm-logout'})
 
 
 def register(request):
@@ -71,4 +72,5 @@ def register(request):
             request, f"Account created for {user.username}! You can log in.")
         return redirect('login')
 
-    return render(request, 'register.html', {'form': form})
+    return render(request,
+                  'register.html', {'active_tab': 'register', 'form': form})
