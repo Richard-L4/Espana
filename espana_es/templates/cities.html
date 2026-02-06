@@ -27,6 +27,7 @@
     {% for card in card_texts %}
         <div class="card">
     <img src="{% static 'images/' %}{{ card.image_name}}" alt="{{ card.title }}">
+    <p>{{ card.title }}</p>
     <p>{{ card.content|truncatechars:100}}</p>
         </div>
     {% endfor %}
