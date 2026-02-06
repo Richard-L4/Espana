@@ -137,12 +137,22 @@ main {
   width: fit-content;   /* 👈 makes box hug text */
 }
 
+.color-h2 {
+  color: yellow;                       /* text color */
+  text-align: center;
+  margin: 0em auto 1em auto;
+  padding: 0.5em 1em;                   /* subtle padding to keep size reasonable */
+  border: 2px solid #f8046f;           /* blue border */
+  border-radius: 8px;       
+  background: #124f49;
+  width: fit-content;   /* 👈 makes box hug text */
+}
 
 a.color-return {                     
   text-align: center;
   margin: 0em auto;
   padding: 0.5em 1em;                   /* subtle padding to keep size reasonable */
-  border: 2px solid yellow;           /* blue border */
+  border: 2px solid #f8046f;           /* blue border */
   border-radius: 8px;       
   background: #124f49;
   color: #f8046f;
@@ -394,8 +404,8 @@ nav a.active {
 /* Individual card styling */
 .card,
 .grid {
-  background-color: #120d71;
-  border: 2px solid yellow;
+  background-color: #124f49;
+  border: 2px solid #f8046f;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -475,7 +485,7 @@ nav a.active {
   height: 200px;         /* fixed height for uniformity */
   object-fit: cover;     /* crops without stretching */
   border-radius: 10px;   /* same as your style */
-  background-color: yellow;
+  background-color: #f8046f;
   padding: 5px;
 }
 

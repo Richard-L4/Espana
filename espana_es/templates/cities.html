@@ -17,6 +17,18 @@
 
 {% block content %}
 
- <h2 class="color">Welcome to the Cities page.</h2>
+ <h2 class="color-h2">Welcome to the Cities page.</h2>
 
+ <p>
+    <a class="color-return" href="{% url 'index' %}">Return Home</a>
+ </p>
+
+ <div class="cards-container">
+    {% for card in card_texts %}
+        <div class="card">
+    <img src="{% static 'images/' %}{{ card.image_name}}" alt="{{ card.title }}">
+    <p>{{ card.content|truncatechars:100}}</p>
+        </div>
+    {% endfor %}
+ </div>
 {% endblock %}

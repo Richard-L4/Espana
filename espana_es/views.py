@@ -3,6 +3,7 @@ from .forms import ContactForm, RegisterForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from .models import CardText
 
 
 # Create your views here.
@@ -23,7 +24,11 @@ def about(request):
 
 
 def cities(request):
-    return render(request, 'cities.html', {'active_tab': 'cities'})
+    card_texts = CardText.objects.all().order_by('id')
+    for card in card_texts:
+        card.display_content = card.content or 'Content coming soon.'
+    return render(request, 'cities.html',
+                  {'active_tab': 'cities', 'card_texts': card_texts})
 
 
 def city_details(request):
