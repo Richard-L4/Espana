@@ -61,6 +61,12 @@
     {% endfor %}
     {% endif %}
 
+    {% if request.user.is_authenticated %}
+    <div class="auth-badge">
+        Your are logged in as {{ request.user.username }}
+    </div>
+    {% endif %}
+
     <h1 class="color">Welcome to Spain.</h1>
 
     <main>

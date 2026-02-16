@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from .models import CardText
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -27,8 +28,14 @@ def cities(request):
     card_texts = CardText.objects.all().order_by('id')
     for card in card_texts:
         card.display_content = card.content or 'Content coming soon.'
+
+    paginator = Paginator(card_texts, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'cities.html',
-                  {'active_tab': 'cities', 'card_texts': card_texts})
+                  {'active_tab': 'cities',
+                   'page_obj': page_obj})
 
 
 def city_details(request):

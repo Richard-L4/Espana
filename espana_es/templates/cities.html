@@ -24,7 +24,7 @@
  </p>
 
  <div class="cards-container">
-    {% for card in card_texts %}
+    {% for card in page_obj %}
         <div class="card">
     <img src="{% static 'images/' %}{{ card.image_name}}" alt="{{ card.title }}">
     <p>{{ card.title }}</p>
@@ -32,4 +32,24 @@
         </div>
     {% endfor %}
  </div>
+
+<!-- Paginator controls-->
+ <div class="pagination">
+    <div class="page-number">
+        <span class="page-info">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+    </div>
+    {% if page_obj.has_previous %}
+    <div class="prev-wrapper">
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number}}" class="prev-btn">Previous</a>
+    </div>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <div class="next-wrapper">
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}" class="next-btn">Next</a>
+    </div>
+    {% endif %}
+ </div>
+
 {% endblock %}
