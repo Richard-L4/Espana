@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ContactForm, RegisterForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
@@ -38,8 +38,13 @@ def cities(request):
                    'page_obj': page_obj})
 
 
-def city_details(request):
-    return render(request, 'city-details.html', {'active_tab': 'city-details'})
+def city_details(request, pk):
+    card = get_object_or_404(CardText, id=pk)
+    content = card.content if card.content else "Content coming soon"
+    return render(request,
+                  'city-details.html',
+                  {'active_tab': 'city-details',
+                   'card': card, 'content': content})
 
 
 # ==============================

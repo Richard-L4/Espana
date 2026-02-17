@@ -19,4 +19,18 @@
 
  <h2 class="color-h2">Welcome to the City Deails page.</h2>
 
+<main class="card-detail-wrapper">
+    <div class="card-detail">
+        <img src="{% static 'images/' %}{{ card.image_name }}" alt="{{ card.title }}">
+        <p>
+            <a class="color-return" href="{% url 'index' %}">Return Home</a>
+        </p>
+    </div>
+
+    <div class="card-content-box">
+        <h1>{{ card.title }}</h1>
+        <p>{{ content }}</p>
+    </div>
+</main> 
+
 {% endblock %}
