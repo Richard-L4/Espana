@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ContactForm, RegisterForm
+from .forms import ContactForm, RegisterForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -41,10 +41,25 @@ def cities(request):
 def city_details(request, pk):
     card = get_object_or_404(CardText, id=pk)
     content = card.content if card.content else "Content coming soon"
+
+    # --- Comments -----
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.user = request.user
+        comment.card = card
+        comment.save()
+        return redirect('city-details', pk=card.pk)
+    else:
+        form = CommentForm()
+
+    comments = card.comments.all().order_by('created_at')
     return render(request,
                   'city-details.html',
                   {'active_tab': 'city-details',
-                   'card': card, 'content': content})
+                   'card': card, 'content': content,
+                   'comments': comments,
+                   'form': form, })
 
 
 # ==============================
