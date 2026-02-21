@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Spain | Login{% endblock %}
+
+
+{% block body_class %}morph-page{% endblock %}
+
+{% block morph_images %}
+<div class="image-morph">
+    <img src="{% static 'images/Home-page-1.jpg' %}" alt="">
+    <img src="{% static 'images/Home-page-2.jpg' %}" alt="">
+    <img src="{% static 'images/Home-page-3.jpg' %}" alt="">
+    <img src="{% static 'images/Home-page-4.jpg' %}" alt="">
+    <img src="{% static 'images/Home-page-5.jpg' %}" alt="">
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+ <h2 class="color-h2">Welcome to the Delete Comment page.</h2>
+
+ <p>
+    <a class="color-return" href="{% url 'index' %}">Return Home</a>
+ </p>
+
+<main class="card-detail-wrapper">
+    <div class="container">
+        <h1>Delete Comment</h1>
+        <p>Are you sure you want to delte the comment.</p>
+        <p><em>"{{ comment.text }}"</em></p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit">Confirm Delete</button>
+            <a href="{% url 'city-details' comment.card.pk %}">Cancel</a>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

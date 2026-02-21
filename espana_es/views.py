@@ -3,8 +3,9 @@ from .forms import ContactForm, RegisterForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .models import CardText
+from .models import CardText, Comment
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -79,6 +80,39 @@ def user_login(request):
             messages.error(request, "Invalid username or password")
 
     return render(request, 'login.html', {'active_tab': 'login', 'form': form})
+
+
+@login_required
+def edit_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    if request.user != comment.user:
+        return redirect('city-details', pk=comment.card.pk)
+
+    form = CommentForm(request.POST or None, instance=comment)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('city-details', pk=comment.card.pk)
+
+    return render(request,
+                  'edit-comment.html',
+                  {'form': form, 'comment': comment,
+                   'active_tab': 'edit-comment'})
+
+
+@login_required
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    if request.user != comment.user:
+        return redirect('city-details', pk=comment.card.pk)
+
+    if request.method == 'POST':
+        card_pk = comment.card.pk
+        comment.delete()
+        return redirect('city-details', pk=card_pk)
+
+    return render(request,
+                  'delete-comment.html',
+                  {'comment': comment, 'active_tab': 'delete-comment'})
 
 
 def user_logout(request):
