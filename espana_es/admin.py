@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contact, CardText, Comment
+from .models import Contact, CardText, Comment, CommentReaction
 
 
 # Register your models here.
@@ -34,3 +34,18 @@ class CommentAdmin(admin.ModelAdmin):
         return obj.text[:50]
 
     comment_preview.short_description = 'Comment'
+
+
+# ------------------------
+# CommentReaction admin
+# ------------------------
+
+class CommentReactionInLine(admin.TabularInline):
+    model = CommentReaction
+    extra = 0
+    readonly_fields = ('user', 'reaction')
+
+
+@admin.register(CommentReaction)
+class CommentReactionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'comment', 'reaction')

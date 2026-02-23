@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load comment_tags %}
 {% block title %}Spain | City - Details{% endblock %}
 
 
@@ -49,7 +50,21 @@
             <p><strong>{{ comment.user.username }}</strong>said:</p>
             <p>{{ comment.text }}</p>
             <small>{{ comment.created_at|date:"M d, Y H:i "}}</small>
+
+              <div class="reaction-buttons">
+            {% if user.is_authenticated %}
+            <button class="like-btn" data-url="{% url 'toggle_reaction' comment.id 'like' %}">👍</button>
+            <span class="like-count">{{ comment|reaction_count:"like" }}</span>
+            
+            <button class="dislike-btn" data-url="{% url 'toggle_reaction' comment.id 'dislike' %}">👎</button>
+            <span class="dislike-count">{{ comment|reaction_count:"dislike" }}</span>
+            {% else %}
+            <p>Login to react.</p>
+            {% endif %}
         </div>
+
+        </div>
+
         {% if user == comment.user %}
         <div class="actions">
             <a href="{% url 'edit-comment' comment.pk %}">Edit</a>
