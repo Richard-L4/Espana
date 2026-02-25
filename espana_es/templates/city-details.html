@@ -18,7 +18,7 @@
 
 {% block content %}
 
- <h2 class="color-h2">Welcome to the City Deails page.</h2>
+<h2 class="color-h2">Welcome to the City Deails page.</h2>
 
 <main class="card-detail-wrapper">
     <div class="card-detail">
@@ -26,11 +26,16 @@
         <p>
             <a class="color-return" href="{% url 'index' %}">Return Home</a>
         </p>
-    </div>
 
-    <div class="card-content-box">
-        <h1>{{ card.title }}</h1>
-        <p>{{ content }}</p>
+        <div class="card-content-box">
+            <h1>{{ card.title }}</h1>
+            <p>{{ content }}</p>
+            <div class="lang-switch">
+                <a href="{% url 'city-details' pk=card.pk %}?lang=en">English</a>
+                <a href="{% url 'city-details' pk=card.pk %}?lang=es">Spanish</a>
+            </div>
+        </div>
+
     </div>
 
     <!---- Comments -->
@@ -51,17 +56,17 @@
             <p>{{ comment.text }}</p>
             <small>{{ comment.created_at|date:"M d, Y H:i "}}</small>
 
-              <div class="reaction-buttons">
-            {% if user.is_authenticated %}
-            <button class="like-btn" data-url="{% url 'toggle_reaction' comment.id 'like' %}">👍</button>
-            <span class="like-count">{{ comment|reaction_count:"like" }}</span>
-            
-            <button class="dislike-btn" data-url="{% url 'toggle_reaction' comment.id 'dislike' %}">👎</button>
-            <span class="dislike-count">{{ comment|reaction_count:"dislike" }}</span>
-            {% else %}
-            <p>Login to react.</p>
-            {% endif %}
-        </div>
+            <div class="reaction-buttons">
+                {% if user.is_authenticated %}
+                <button class="like-btn" data-url="{% url 'toggle_reaction' comment.id 'like' %}">👍</button>
+                <span class="like-count">{{ comment|reaction_count:"like" }}</span>
+
+                <button class="dislike-btn" data-url="{% url 'toggle_reaction' comment.id 'dislike' %}">👎</button>
+                <span class="dislike-count">{{ comment|reaction_count:"dislike" }}</span>
+                {% else %}
+                <p>Login to react.</p>
+                {% endif %}
+            </div>
 
         </div>
 
@@ -71,12 +76,12 @@
             <a href="{% url 'delete-comment' comment.pk %}">Delete</a>
         </div>
         {% endif %}
-        
+
         {% empty %}
-            <hr>
-            <p class="no-comments">No Comments yer</p>
+        <hr>
+        <p class="no-comments">No Comments yer</p>
         {% endfor %}
     </div>
-</main> 
+</main>
 
 {% endblock %}

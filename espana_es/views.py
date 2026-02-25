@@ -12,7 +12,98 @@ from django.db import transaction
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html', {'active_tab': 'index'})
+    lang = request.GET.get('lang', 'en')
+    spain_intro = {
+        'en': [
+            (
+                "Spain, stretching across the Iberian Peninsula"
+                " between the Atlantic and Mediterranean,"
+                " weaves centuries of history, passionate culture,"
+                " and breathtaking landscapes"
+                " into a single unforgettable nation."
+            ),
+            (
+                "Its storied cities pulse with life —"
+                " Madrid's grand boulevards and world-class museums,"
+                " Barcelona's Gaudí masterpieces and Gothic Quarter,"
+                " Seville's flamenco rhythms and Moorish palaces."
+                " Every street corner holds a story."
+            ),
+            (
+                "From the snow-capped Pyrenees"
+                " to sun-drenched Andalusian plains,"
+                " Spain's landscapes are as varied as its regions."
+                " Visitors feast on tapas, sip Rioja,"
+                " and linger over long lunches"
+                " as the Mediterranean sun dips toward the horizon."
+            ),
+            (
+                "Festivals ignite every calendar —"
+                " the Running of the Bulls in Pamplona,"
+                " La Tomatina in Buñol,"
+                " Semana Santa processions that stop time."
+                " Here, tradition is not preserved behind glass;"
+                " it lives, dances, and roars."
+            ),
+            (
+                "With warmth in its people, fire in its soul,"
+                " and beauty around every bend,"
+                " Spain offers a Mediterranean spirit like no other"
+                " — one that stays with you"
+                " long after you've left its shores."
+            ),
+        ],
+        'es': [
+            (
+                "España, extendida por la Península Ibérica"
+                " entre el Atlántico y el Mediterráneo,"
+                " entrelaza siglos de historia,"
+                " cultura apasionada y paisajes impresionantes"
+                " en una nación única e inolvidable."
+            ),
+            (
+                "Sus legendarias ciudades vibran con vida —"
+                " los grandes bulevares y museos de Madrid,"
+                " las obras maestras de Gaudí"
+                " y el Barrio Gótico de Barcelona,"
+                " los ritmos del flamenco"
+                " y los palacios árabes de Sevilla."
+                " En cada rincón hay una historia que contar."
+            ),
+            (
+                "Desde los nevados Pirineos"
+                " hasta las soleadas llanuras andaluzas,"
+                " los paisajes de España son tan variados"
+                " como sus regiones."
+                " Los visitantes disfrutan de tapas,"
+                " saborean un Rioja y se deleitan"
+                " con largas sobremesas mientras el sol"
+                " mediterráneo se hunde en el horizonte."
+            ),
+            (
+                "Los festivales encienden cada rincón del calendario"
+                " — los Sanfermines en Pamplona,"
+                " la Tomatina en Buñol,"
+                " las procesiones de Semana Santa"
+                " que detienen el tiempo."
+                " Aquí, la tradición no se conserva tras un cristal;"
+                " vive, baila y ruge."
+            ),
+            (
+                "Con calidez en su gente,"
+                " fuego en su alma y belleza a cada paso,"
+                " España ofrece un espíritu mediterráneo"
+                " como ningún otro — uno que permanece contigo"
+                " mucho después de haber dejado sus costas."
+            ),
+        ],
+    }
+    content_paragraphs = spain_intro.get(lang, spain_intro['en'])
+    return render(request, 'index.html', {
+        'active_tab': 'index',
+        'content_paragraphs': content_paragraphs,
+        'lang': lang,
+    })
 
 
 def about(request):
@@ -28,9 +119,14 @@ def about(request):
 
 
 def cities(request):
+    lang = request.GET.get('lang', 'en')
     card_texts = CardText.objects.all().order_by('id')
     for card in card_texts:
-        card.display_content = card.content or 'Content coming soon.'
+        translation = card.translations.filter(language=lang).first()
+        card.translated_content = (
+            translation.content
+            if translation else card.content or 'Content coming soon.'
+        )
 
     paginator = Paginator(card_texts, 4)
     page_number = request.GET.get('page')
@@ -38,12 +134,20 @@ def cities(request):
 
     return render(request, 'cities.html',
                   {'active_tab': 'cities',
-                   'page_obj': page_obj})
+                   'page_obj': page_obj,
+                   'lang': lang})
 
 
 def city_details(request, pk):
     card = get_object_or_404(CardText, id=pk)
-    content = card.content if card.content else "Content coming soon"
+    # 🌍 Language system (unchanged)
+    lang = request.GET.get('lang', 'en')
+    translation = card.translations.filter(language=lang).first()
+    content = (
+        translation.content
+        if translation
+        else card.content or 'Content coming soon.'
+    )
 
     # --- Comments -----
     form = CommentForm(request.POST)
@@ -60,9 +164,11 @@ def city_details(request, pk):
     return render(request,
                   'city-details.html',
                   {'active_tab': 'city-details',
-                   'card': card, 'content': content,
+                   'card': card,
+                   'content': content,
                    'comments': comments,
                    'form': form,
+                   'lang': lang,
                    })
 
 

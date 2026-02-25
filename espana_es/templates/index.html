@@ -8,11 +8,20 @@
 
 <section class="home-image image-1"></section>
 
-<section class="home-text">
-    <div class="text-container">
-        <p>Discover the magic, culture, and beauty of Spain in every corner.</p>
+
+<div class="valencia-intro">
+    <div class="valencia-text">
+        {% for paragraph in content_paragraphs %}
+            <p>{{ paragraph }}</p>
+        {% endfor %}
     </div>
-</section>
+</div>
+<div  class="card-detail">
+<div class="lang-switch">
+    <a href="?lang=en">English</a> 
+    <a href="?lang=es">Español</a>
+</div>
+</div>
 
 <section class="home-image image-2"></section>
 

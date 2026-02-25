@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Contact, CardText, Comment, CommentReaction
+from .models import Contact, CardText, Comment, CommentReaction, \
+    CardTextTranslation
 
 
 # Register your models here.
@@ -12,13 +13,23 @@ class Contact(admin.ModelAdmin):
     list_display = ('name', 'email')
 
 
+# ------------------------
+# CardText with translations and ratings
+# ------------------------
+
+class CardTextTranslationInline(admin.TabularInline):
+    model = CardTextTranslation
+    extra = 1
+
 # --------------
 # Card Text
 # ---------------
 
+
 @admin.register(CardText)
 class CardTextAdmin(admin.ModelAdmin):
     list_display = ('title', 'short_content', 'image_name')
+    inlines = [CardTextTranslationInline]
 
     def short_content(self, obj):
         return obj.content[:50] + ("..." if len(obj.content) > 50 else "")
