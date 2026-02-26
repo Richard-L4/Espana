@@ -34,8 +34,46 @@
                 <a href="{% url 'city-details' pk=card.pk %}?lang=en">English</a>
                 <a href="{% url 'city-details' pk=card.pk %}?lang=es">Spanish</a>
             </div>
-        </div>
 
+            <div class="rating-box">
+                <h3>Event Rating</h3>
+
+                <p>
+                    ⭐ Average:
+                    {% if average_rating %}
+                        {{ average_rating|floatformat:1 }}
+                    {% else %}
+                        No ratings yet
+                    {% endif %}
+                    {% if rating_count %}
+                        ({{ rating_count }} rating_count|pluralize )
+                    {% endif %}
+                </p>
+
+                {% if user.is_authenticated %}
+                <form method='POST' class="star-form" data-url="{% url 'rate_card' pk=card.id %}">
+                    {% csrf_token %}
+                    <div class="star-rating">
+                        {% for star in "12345"|make_list %}
+                        <button type="button" name="rating" value="{{ star }}"
+                        class="star-btn {% if user_rating and user_rating.rating == star|add:'0' %}slected{% endif %}">
+                         ★
+                    </button>
+                    {% endfor %}
+                    </div>
+                    <small class="rating-msg">
+                        {% if user_rating %}
+                            Your rating: {{ user_rating.rating }}  ★ (click star to change)
+                        {% else %}
+                            Click star to rate card
+                        {% endif %}
+                    </small>
+                </form>
+                {% else %}
+                <p>Login to rate this event.</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
     <!---- Comments -->

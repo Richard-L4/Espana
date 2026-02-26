@@ -14,5 +14,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('register', views.register, name='register'),
     path('toggle-reaction/<int:comment_id>/<str:reaction_type>/',
-         views.toggle_reaction, name='toggle_reaction')
+         views.toggle_reaction, name='toggle_reaction'),
+    path('card/<int:pk>/rate/', views.rate_card, name='rate_card'),
 ]

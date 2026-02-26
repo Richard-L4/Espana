@@ -3,11 +3,12 @@ from .forms import ContactForm, RegisterForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .models import CardText, Comment, CommentReaction
+from .models import CardText, Comment, CommentReaction, EventRating
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import transaction
+from django.db.models import Avg
 
 
 # Create your views here.
@@ -161,6 +162,18 @@ def city_details(request, pk):
         form = CommentForm()
 
     comments = card.comments.all().order_by('created_at')
+
+    # ⭐ RATING STATS (NEW)
+    average_rating = card.ratings.aggregate(avg=Avg('rating'))['avg']
+    rating_count = card.ratings.count()
+
+    # ⭐ User’s existing rating (NEW)
+    user_rating = None
+    if request.user.is_authenticated:
+        user_rating = EventRating.objects.filter(
+            card=card, user=request.user
+        ).first()
+
     return render(request,
                   'city-details.html',
                   {'active_tab': 'city-details',
@@ -169,7 +182,38 @@ def city_details(request, pk):
                    'comments': comments,
                    'form': form,
                    'lang': lang,
+                   'average_rating': average_rating,
+                   'rating_count': rating_count,
+                   'user_rating': user_rating
                    })
+
+
+@login_required
+def rate_card(request, pk):
+    if request.method == 'POST':
+        card = get_object_or_404(CardText, pk=pk)
+        rating_value = int(request.POST.get('rating', 0))
+        if rating_value < 1 or rating_value > 5:
+            return JsonResponse({'error': 'Invalid rating'}, status=400)
+
+        # Create/ update user rating
+        EventRating.objects.update_or_create(
+            card=card,
+            user=request.user,
+            defaults={'rating': rating_value}
+        )
+
+        # Recalculate average and count
+
+        avg = card.ratings.aggregate(Avg('rating'))['rating__avg'] or 0
+        count = card.ratings.count()
+
+        return JsonResponse({
+            'rating': rating_value,
+            'average_rating': round(avg, 1),
+            'rating_count': count
+        })
+    return JsonResponse({'error': 'POST required'}, status=400)
 
 
 # ==============================
