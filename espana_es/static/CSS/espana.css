@@ -114,6 +114,23 @@ body.home-page {
   100% { opacity: 0; }
 }
 
+@keyframes zoomBreath {
+  0%, 100% { background-size: 100%; }
+  50% { background-size: 105%; }
+}
+
+@keyframes drift {
+  0%, 100% { background-position: center center; }
+  50% { background-position: center 55%; }
+}
+
+.image-1 {
+  animation: zoomBreath 6s ease-in-out infinite;
+}
+
+.image-2 {
+  animation: drift 8s ease-in-out infinite;
+}
 
 main {
   flex: 1;
